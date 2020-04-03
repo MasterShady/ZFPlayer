@@ -77,10 +77,21 @@
 
 @property (nonatomic, strong) UIView *effectView;
 
+/** <#注释#> */
+@property (nonatomic, strong) UIView *playStatusControlView;
+
 @end
 
 @implementation ZFPlayerControlView
+
+{
+    UIButton *_flipBtn;
+    UIButton *_speedPlayBtn;
+}
+
+
 @synthesize player = _player;
+
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -163,6 +174,43 @@
     min_h = 35;
     self.volumeBrightnessView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.volumeBrightnessView.zf_centerX = self.zf_centerX;
+    
+    //右上角
+    min_w = 50;
+    min_x = min_view_w - 10 - 50;
+    min_y = 10;
+    min_h = 100;
+    self.playStatusControlView.frame = CGRectMake(min_x, min_y, min_w, min_h);
+    
+    min_w = 30;
+    min_x = 10;
+    min_y = 10;
+    min_h = 30;
+    _flipBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
+    
+    min_w = 30;
+    min_x = 10;
+    min_y = 60;
+    min_h = 30;
+    _speedPlayBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
+}
+
+- (UIView *)playStatusControlView{
+    if(!_playStatusControlView){
+        _playStatusControlView = [UIView new];
+        _playStatusControlView.backgroundColor = [UIColor redColor];
+        
+        _flipBtn = [UIButton new];
+        [_playStatusControlView addSubview:_flipBtn];
+        
+        [_flipBtn setImage:[UIImage imageNamed:@"ios-exc_n"] forState:UIControlStateNormal];
+        
+        _speedPlayBtn = [UIButton new];
+        [_playStatusControlView addSubview:_speedPlayBtn];
+        [_speedPlayBtn setImage:[UIImage imageNamed:@"sp_n"] forState:UIControlStateNormal];
+        
+    }
+    return _playStatusControlView;
 }
 
 - (void)dealloc {
@@ -183,6 +231,7 @@
     [self.fastView addSubview:self.fastProgressView];
     [self addSubview:self.bottomPgrogress];
     [self addSubview:self.volumeBrightnessView];
+    [self addSubview:self.playStatusControlView];
 }
 
 - (void)autoFadeOutControlView {
@@ -218,6 +267,7 @@
                 [self.portraitControlView hideControlView];
             }
         }
+        self.playStatusControlView.zf_x = self.zf_width - 50 - 10 + 100;
     } completion:^(BOOL finished) {
         self.bottomPgrogress.hidden = NO;
     }];
@@ -238,6 +288,7 @@
                 [self.portraitControlView showControlView];
             }
         }
+        self.playStatusControlView.zf_x = self.zf_width - 50 - 10;
     } completion:^(BOOL finished) {
         self.bottomPgrogress.hidden = YES;
     }];
