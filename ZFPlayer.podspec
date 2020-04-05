@@ -7,18 +7,18 @@
 #
 
 Pod::Spec.new do |s|
-    s.name             = 'ZFPlayer'
-    s.version          = '3.3.1'
-    s.summary          = 'A good player made by renzifeng'
+    s.name             = 'SY_ZFPlayer'
+    s.version          = '0.1'
+    s.summary          = '给renzifeng的ZFPlayer库的添加了镜像和倍数播放的功能'
     s.homepage         = 'https://github.com/renzifeng/ZFPlayer'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
     s.author           = { 'renzifeng' => 'zifeng1300@gmail.com' }
-    s.source           = { :git => 'https://github.com/renzifeng/ZFPlayer.git', :tag => s.version.to_s }
+    s.source           = { :git => 'https://github.com/Minlison/DMPlayer', :tag => s.version.to_s }
     s.social_media_url = 'http://weibo.com/zifeng1300'
     s.ios.deployment_target = '7.0'
     s.requires_arc = true
     s.static_framework = true
-    s.default_subspec = 'Core'
+    s.default_subspec = 'Core','ControlView'
     
     s.subspec 'Core' do |core|
         core.source_files = 'ZFPlayer/Classes/Core/**/*'
@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
         ijkplayer.source_files = 'ZFPlayer/Classes/ijkplayer/*.{h,m}'
         ijkplayer.public_header_files = 'ZFPlayer/Classes/ijkplayer/*.h'
         ijkplayer.dependency 'ZFPlayer/Core'
-        ijkplayer.dependency 'IJKMediaFramework'
+        #ijkplayer.dependency 'IJKMediaFramework'
         ijkplayer.ios.deployment_target = '8.0'
     end
     
@@ -51,7 +51,7 @@ Pod::Spec.new do |s|
         ksyMediaPlayer.source_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}'
         ksyMediaPlayer.public_header_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.h'
         ksyMediaPlayer.dependency 'ZFPlayer/Core'
-        ksyMediaPlayer.dependency 'KSYMediaPlayer'
+        #ksyMediaPlayer.dependency 'KSYMediaPlayer'
         ksyMediaPlayer.pod_target_xcconfig = {
             'ARCHS[sdk=iphonesimulator*]' => '$(ARCHS_STANDARD_64_BIT)'
         }

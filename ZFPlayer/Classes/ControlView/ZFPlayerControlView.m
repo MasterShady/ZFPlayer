@@ -31,6 +31,7 @@
 #import "UIImageView+ZFCache.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFVolumeBrightnessView.h"
+#import "ZFSpeedSelectView.h"
 #if __has_include(<ZFPlayer/ZFPlayer.h>)
 #import <ZFPlayer/ZFPlayer.h>
 #else
@@ -76,9 +77,13 @@
 @property (nonatomic, strong) UIImageView *bgImgView;
 
 @property (nonatomic, strong) UIView *effectView;
-
 /** <#注释#> */
 @property (nonatomic, strong) UIView *playStatusControlView;
+
+@property (nonatomic, strong) ZFSpeedSelectView *speedSelectView;
+
+/** 是否显示播放速度层 */
+@property (nonatomic, assign) BOOL isShowingSpeedSelectView;
 
 @end
 
@@ -193,25 +198,43 @@
     min_y = 60;
     min_h = 30;
     _speedPlayBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
+    
+    
+    self.speedSelectView.frame = CGRectMake(self.zf_width, 0, self.zf_width/2, self.zf_height);
 }
 
 - (UIView *)playStatusControlView{
     if(!_playStatusControlView){
         _playStatusControlView = [UIView new];
-        _playStatusControlView.backgroundColor = [UIColor redColor];
+        _playStatusControlView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+        _playStatusControlView.layer.cornerRadius = 5;
+        _playStatusControlView.layer.masksToBounds = YES;
         
         _flipBtn = [UIButton new];
         [_playStatusControlView addSubview:_flipBtn];
+        [_flipBtn addTarget:self action:@selector(flip:) forControlEvents:UIControlEventTouchUpInside];
         
-        [_flipBtn setImage:[UIImage imageNamed:@"ios-exc_n"] forState:UIControlStateNormal];
+        [_flipBtn setImage:ZFPlayer_Image(@"ios-exc_n") forState:UIControlStateNormal];
         
         _speedPlayBtn = [UIButton new];
         [_playStatusControlView addSubview:_speedPlayBtn];
-        [_speedPlayBtn setImage:[UIImage imageNamed:@"sp_n"] forState:UIControlStateNormal];
+        [_speedPlayBtn setImage:ZFPlayer_Image(@"sp_n") forState:UIControlStateNormal];
+        [_speedPlayBtn addTarget:self action:@selector(speedSelect:) forControlEvents:UIControlEventTouchUpInside];
         
     }
     return _playStatusControlView;
 }
+
+- (void)flip:(UIButton *)btn{
+    btn.selected = !btn.selected;
+    self.player.currentPlayerManager.view.transform = btn.selected?  CGAffineTransformMakeScale(-1,1):CGAffineTransformIdentity;
+    self.transform = btn.selected? CGAffineTransformInvert(CGAffineTransformMakeScale(-1,1)):CGAffineTransformIdentity;
+}
+
+- (void)speedSelect:(UIButton *)btn{
+    [self showSpeedSelectView];
+}
+
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
@@ -232,6 +255,7 @@
     [self addSubview:self.bottomPgrogress];
     [self addSubview:self.volumeBrightnessView];
     [self addSubview:self.playStatusControlView];
+    [self addSubview:self.speedSelectView];
 }
 
 - (void)autoFadeOutControlView {
@@ -272,6 +296,7 @@
         self.bottomPgrogress.hidden = NO;
     }];
 }
+
 
 /// 显示控制层
 - (void)showControlViewWithAnimated:(BOOL)animated {
@@ -399,6 +424,10 @@
     if (self.player.isSmallFloatViewShow && !self.player.isFullScreen) {
         [self.player enterFullScreen:YES animated:YES];
     } else {
+        if (self.isShowingSpeedSelectView) {
+            [self hideSpeedSelectView];
+            return;
+        }
         if (self.controlViewAppeared) {
             [self hideControlViewWithAnimated:YES];
         } else {
@@ -886,6 +915,36 @@
 - (void)setBackBtnClickCallback:(void (^)(void))backBtnClickCallback {
     _backBtnClickCallback = [backBtnClickCallback copy];
     self.landScapeControlView.backBtnClickCallback = _backBtnClickCallback;
+}
+
+- (UIView *)speedSelectView{
+    if(!_speedSelectView){
+        _speedSelectView = [ZFSpeedSelectView new];
+        @weakify(self)
+        [_speedSelectView setChangeSpeed:^(CGFloat speed) {
+            @strongify(self)
+            self.player.currentPlayerManager.rate = speed;
+            [self hideSpeedSelectView];
+           
+        }];
+    }
+    return _speedSelectView;
+}
+
+- (void)hideSpeedSelectView{
+    [UIView animateWithDuration:0.4 animations:^{
+        self.speedSelectView.frame = CGRectMake(self.zf_width, 0, self.zf_width/2, self.zf_height);
+    } completion:^(BOOL finished) {
+        _isShowingSpeedSelectView = NO;
+    }];
+}
+
+- (void)showSpeedSelectView{
+    [UIView animateWithDuration:0.4 animations:^{
+        self.speedSelectView.frame = CGRectMake(self.zf_width/2, 0, self.zf_width/2, self.zf_height);
+    } completion:^(BOOL finished) {
+        _isShowingSpeedSelectView = YES;
+    }];
 }
 
 @end

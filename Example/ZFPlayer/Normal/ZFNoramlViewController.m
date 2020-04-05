@@ -39,9 +39,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Push" style:UIBarButtonItemStylePlain target:self action:@selector(pushNewVC)];
     [self.view addSubview:self.containerView];
     
-    [self.containerView addSubview:self.playBtn];
-    [self.view addSubview:self.changeBtn];
-    [self.view addSubview:self.nextBtn];
+
 
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
     /// 播放器相关
@@ -75,6 +73,10 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     };
     
     self.player.assetURLs = self.assetURLs;
+    
+    [self.containerView addSubview:self.playBtn];
+    [self.view addSubview:self.changeBtn];
+    [self.view addSubview:self.nextBtn];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

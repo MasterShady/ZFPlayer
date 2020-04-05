@@ -84,6 +84,14 @@ static NSString *const kPresentationSize         = @"presentationSize";
     return [self avLayer].videoGravity;
 }
 
+- (void)removeFromSuperview{
+    [super removeFromSuperview];
+}
+
+-(void)didMoveToSuperview{
+    [super didMoveToSuperview];
+}
+
 @end
 
 @interface ZFAVPlayerManager () {
