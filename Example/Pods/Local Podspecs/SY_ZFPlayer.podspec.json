@@ -1,0 +1,86 @@
+{
+  "name": "SY_ZFPlayer",
+  "version": "0.1",
+  "summary": "给renzifeng的ZFPlayer库的添加了镜像和倍数播放的功能",
+  "homepage": "https://github.com/renzifeng/ZFPlayer",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "renzifeng": "zifeng1300@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/MasterShady/ZFPlayer",
+    "tag": "0.1"
+  },
+  "social_media_url": "http://weibo.com/zifeng1300",
+  "platforms": {
+    "ios": "7.0"
+  },
+  "requires_arc": true,
+  "static_framework": true,
+  "default_subspecs": [
+    "Core",
+    "ControlView"
+  ],
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": "ZFPlayer/Classes/Core/**/*",
+      "public_header_files": "ZFPlayer/Classes/Core/**/*.h",
+      "frameworks": [
+        "UIKit",
+        "MediaPlayer",
+        "AVFoundation"
+      ]
+    },
+    {
+      "name": "ControlView",
+      "source_files": "ZFPlayer/Classes/ControlView/**/*.{h,m}",
+      "public_header_files": "ZFPlayer/Classes/ControlView/**/*.h",
+      "resources": "ZFPlayer/Classes/ControlView/ZFPlayer.bundle",
+      "dependencies": {
+        "SY_ZFPlayer/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "AVPlayer",
+      "source_files": "ZFPlayer/Classes/AVPlayer/**/*.{h,m}",
+      "public_header_files": "ZFPlayer/Classes/AVPlayer/**/*.h",
+      "dependencies": {
+        "SY_ZFPlayer/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "ijkplayer",
+      "source_files": "ZFPlayer/Classes/ijkplayer/*.{h,m}",
+      "public_header_files": "ZFPlayer/Classes/ijkplayer/*.h",
+      "dependencies": {
+        "SY_ZFPlayer/Core": [
+
+        ]
+      },
+      "platforms": {
+        "ios": "8.0"
+      }
+    },
+    {
+      "name": "KSYMediaPlayer",
+      "source_files": "ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}",
+      "public_header_files": "ZFPlayer/Classes/KSYMediaPlayer/*.h",
+      "dependencies": {
+        "SY_ZFPlayer/Core": [
+
+        ]
+      },
+      "pod_target_xcconfig": {
+        "ARCHS[sdk=iphonesimulator*]": "$(ARCHS_STANDARD_64_BIT)"
+      }
+    }
+  ]
+}
