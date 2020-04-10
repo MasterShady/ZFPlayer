@@ -49,8 +49,8 @@
     
     NSMutableArray *temps = @[].mutableCopy;
     for (int i = 0; i<6; i++) {
-        CGFloat speed = 0.5 + i * 0.25;
-        NSString *speedStr = [NSString stringWithFormat:@"%.2fX",speed];
+        CGFloat speed = speedsAtIndex(i);
+        NSString *speedStr = [NSString stringWithFormat:@"%gX",speed];
         UIButton *speedBtn = [UIButton new];
         [speedBtn setTitle:speedStr forState:UIControlStateNormal];
         [speedBtn setTitleColor:[UIColor colorWithRed:34/255.0 green:34/255.0 blue:34/255.0 alpha:1] forState:UIControlStateNormal];
@@ -60,9 +60,11 @@
         [speedBtn addTarget:self action:@selector(selectSpeed:) forControlEvents:UIControlEventTouchUpInside];
         [temps addObject:speedBtn];
         speedBtn.tag = i;
+        if (speed == 1) {
+            speedBtn.selected = YES;
+        }
     }
     _speedBtns = temps.copy;
-    
 }
 
 -(void)layoutSubviews{
@@ -81,18 +83,23 @@
 }
 
 - (void)selectSpeed:(UIButton *)btn{
-    NSInteger tag = btn.tag;
-    CGFloat speed = 0.5 + tag * 0.25;
-    self.speed = speed;
+    self.speed = speedsAtIndex((int)btn.tag);
+    [_speedBtns enumerateObjectsUsingBlock:^(UIButton * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.selected = obj == btn;
+    }];
+    
 }
 
 - (void)setSpeed:(CGFloat)speed{
     _speed = speed;
-    [_speedBtns enumerateObjectsUsingBlock:^(UIButton * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        CGFloat btnSpeed = 0.5 + obj.tag * 0.25;
-        obj.selected = speed == btnSpeed;
-    }];
     _changeSpeed?_changeSpeed(speed):0;
 }
 
+
+float speedsAtIndex(int i){
+    float speeds[] = {0.5,0.75,1,1.25,1.5,2.0};
+    return speeds[i];
+}
+
 @end
+
