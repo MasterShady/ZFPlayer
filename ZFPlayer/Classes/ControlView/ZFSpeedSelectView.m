@@ -19,6 +19,9 @@
 /** <#注释#> */
 @property (nonatomic, strong) UIView *labelBottomLine;
 
+/** <#注释#> */
+@property (nonatomic, strong) UIVisualEffectView *effectView;
+
 
 
 @end
@@ -27,14 +30,18 @@
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor whiteColor];
         [self addSubviews];
         self.speed  = 1;
     }
     return self;
 }
 
-- (void)addSubviews{
+- (void)addSubviews{    
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+    _effectView = [UIVisualEffectView new];
+    [_effectView setEffect:blurEffect];
+    _effectView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
+    [self addSubview:_effectView];
     
     _topLabel = [UILabel new];
     [self addSubview:_topLabel];
@@ -71,6 +78,7 @@
     [super layoutSubviews];
     _topLabel.frame = CGRectMake(0, 0, self.zf_width, 64);
     _labelBottomLine.frame = CGRectMake(0, _topLabel.zf_bottom, self.zf_width, 1);
+    _effectView.frame = self.bounds;
     
     CGFloat btnW = (self.zf_width - 10 *2)/3;
     CGFloat btnH = (self.zf_height - _topLabel.zf_bottom - 10 *3)/2;

@@ -214,7 +214,7 @@
         [_playStatusControlView addSubview:_flipBtn];
         [_flipBtn addTarget:self action:@selector(flip:) forControlEvents:UIControlEventTouchUpInside];
         
-        [_flipBtn setImage:ZFPlayer_Image(@"ios-exc_n") forState:UIControlStateNormal];
+        [_flipBtn setImage:ZFPlayer_Image(@"mi_n") forState:UIControlStateNormal];
         
         _speedPlayBtn = [UIButton new];
         [_playStatusControlView addSubview:_speedPlayBtn];
