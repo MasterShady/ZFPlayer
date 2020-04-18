@@ -52,7 +52,7 @@
     
     _labelBottomLine = [UILabel new];
     [self addSubview:_labelBottomLine];
-    _labelBottomLine.backgroundColor = [UIColor colorWithRed:229/255.0 green:229/255.0 blue:229/255.0 alpha:1];
+    _labelBottomLine.backgroundColor = [UIColor colorWithRed:195/255.0 green:195/255.0 blue:195/255.0 alpha:1];
     
     NSMutableArray *temps = @[].mutableCopy;
     for (int i = 0; i<6; i++) {
