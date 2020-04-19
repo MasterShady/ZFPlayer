@@ -227,8 +227,9 @@
 
 - (void)flip:(UIButton *)btn{
     btn.selected = !btn.selected;
-    self.player.currentPlayerManager.view.transform = btn.selected?  CGAffineTransformMakeScale(-1,1):CGAffineTransformIdentity;
-    self.transform = btn.selected? CGAffineTransformInvert(CGAffineTransformMakeScale(-1,1)):CGAffineTransformIdentity;
+    self.customDisablePanMovingDirection = !btn.selected;
+    self.player.currentPlayerManager.view.transform = CGAffineTransformScale(self.player.currentPlayerManager.view.transform,-1,1);
+    self.transform = btn.selected? CGAffineTransformMakeScale(-1, 1) : CGAffineTransformIdentity;
 }
 
 - (void)speedSelect:(UIButton *)btn{
@@ -320,7 +321,7 @@
 }
 
 /// 音量改变的通知
-- (void)volumeChanged:(NSNotification *)notification {    
+- (void)volumeChanged:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
     NSString *reasonstr = userInfo[@"AVSystemController_AudioVolumeChangeReasonNotificationParameter"];
     if ([reasonstr isEqualToString:@"ExplicitVolumeChange"]) {
@@ -616,6 +617,13 @@
         [self showControlViewWithAnimated:NO];
     } else {
         [self hideControlViewWithAnimated:NO];
+    }
+    //这个地方 根据是否翻转来调整
+    if (_flipBtn.selected) {
+        self.player.currentPlayerManager.view.transform = CGAffineTransformScale(self.player.currentPlayerManager.view.transform,-1,1);
+        self.transform = CGAffineTransformMakeScale(-1, 1);
+    }else{
+        self.transform = CGAffineTransformIdentity;
     }
 }
 
