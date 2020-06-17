@@ -182,7 +182,7 @@
     
     //右上角
     min_w = 50;
-    min_x = min_view_w - 10 - 50;
+    min_x = min_view_w;
     min_y = 10;
     min_h = 100;
     self.playStatusControlView.frame = CGRectMake(min_x, min_y, min_w, min_h);
